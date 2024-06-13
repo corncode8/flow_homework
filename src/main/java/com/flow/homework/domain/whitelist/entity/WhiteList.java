@@ -53,4 +53,13 @@ public class WhiteList extends BaseEntity {
 	public enum State {
 		ACTIVE, DELETE
 	}
+
+	public WhiteList(String ipAddress, String description, LocalDateTime startTime, LocalDateTime endTime,
+		State status) {
+		this.ipAddress = ipAddress;
+		this.description = description;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.status = status;
+	}
 }

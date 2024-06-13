@@ -33,7 +33,7 @@ public class WhiteListController {
 	public List<WhiteList> whiteListView() {
 		List<WhiteList> whiteLists = new ArrayList<>();
 		WhiteList whiteList = new WhiteList(
-			"127.0.0.1", "test_description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), WhiteList.State.ACTIVE
+			"127.0.0.1", "test_description", LocalDateTime.now(), LocalDateTime.now().plusDays(1)
 		);
 
 		whiteLists.add(whiteList);

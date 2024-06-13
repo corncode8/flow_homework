@@ -1,6 +1,6 @@
 package com.flow.homework.domain.whitelist.components;
 
-import static com.flow.homework.api.support.response.BaseResponseStatus.NOT_FIND_WHITELIST;
+import static com.flow.homework.api.support.response.BaseResponseStatus.WHITE_LIST_LIMIT_EXCEEDED;
 
 import org.springframework.stereotype.Component;
 
@@ -14,12 +14,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class WhiteListReader {
+public class WhiteListValidator {
 
 	private final WhiteListReaderRepository whiteListReaderRepository;
 
-	public WhiteList findWhiteList(Long id) {
-		return whiteListReaderRepository.findWhiteList(id)
-			.orElseThrow(() -> new BaseException(NOT_FIND_WHITELIST));
+	public void saveValidation() {
+		int num = whiteListReaderRepository.activeWhiteListNum(WhiteList.State.ACTIVE);
+
+		if (num >= 50) {
+			throw new BaseException(WHITE_LIST_LIMIT_EXCEEDED);
+		}
 	}
 }

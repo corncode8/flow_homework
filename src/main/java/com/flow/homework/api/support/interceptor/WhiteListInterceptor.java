@@ -22,8 +22,6 @@ public class WhiteListInterceptor implements HandlerInterceptor {
 		Exception {
 
 		String clientIp = interceptorService.getClientIp(request);
-
-		log.info("==== clientIp : "+ clientIp + " ====");
 		request.setAttribute("clientIp", clientIp);
 
 		return HandlerInterceptor.super.preHandle(request, response, handler);

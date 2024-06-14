@@ -51,10 +51,9 @@ public class WhiteListDeleteUseCaseTest {
 	void deleteTest() {
 	    //given
 		Long testId = 1L;
-		DeleteIpRequest request = new DeleteIpRequest(testId);
 
 	    //when
-		whiteListDeleteUseCase.delete(request);
+		whiteListDeleteUseCase.delete(testId);
 
 	    //then
 		WhiteList result = whiteListReader.findWhiteList(testId);

@@ -1,9 +1,16 @@
 package com.flow.homework.domain.whitelist.components;
 
+import static com.flow.homework.api.support.response.BaseResponseStatus.NOT_FIND_DESCRIPTION;
+import static com.flow.homework.api.support.response.BaseResponseStatus.NOT_FIND_IP_ADDRESS;
+import static com.flow.homework.api.support.response.BaseResponseStatus.NOT_FIND_START_TIME;
+import static com.flow.homework.api.support.response.BaseResponseStatus.NOT_FIND_TIME;
 import static com.flow.homework.api.support.response.BaseResponseStatus.WHITE_LIST_LIMIT_EXCEEDED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +20,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.flow.homework.api.support.exceptions.BaseException;
+import com.flow.homework.api.whitelist.request.SaveIpRequest;
+import com.flow.homework.api.whitelist.request.SearchRequest;
 import com.flow.homework.domain.whitelist.entity.WhiteList;
 import com.flow.homework.domain.whitelist.repository.WhiteListReaderRepository;
 
@@ -29,10 +38,13 @@ public class WhiteListValidatorTest {
 	@Test
 	void saveValidationTest() {
 	    //given
+		SaveIpRequest request = new SaveIpRequest(
+			"127.0.0.1", "test", LocalDateTime.now(), LocalDateTime.now().plusDays(1)
+		);
 		when(whiteListReaderRepository.activeWhiteListNum(WhiteList.State.ACTIVE)).thenReturn(49);
 
 	    //when & then
-		whiteListValidator.saveValidation();
+		whiteListValidator.saveValidation(request);
 	}
 
 	/*
@@ -42,11 +54,97 @@ public class WhiteListValidatorTest {
 	@Test
 	void saveValidationFailTest() {
 		//given
+		SaveIpRequest request = new SaveIpRequest(
+			"127.0.0.1", "test", LocalDateTime.now(), LocalDateTime.now().plusDays(1)
+		);
 		when(whiteListReaderRepository.activeWhiteListNum(WhiteList.State.ACTIVE)).thenReturn(50);
 
 		//when & then
-		BaseException exception = assertThrows(BaseException.class, () -> whiteListValidator.saveValidation());
+		BaseException exception = assertThrows(BaseException.class, () -> whiteListValidator.saveValidation(request));
 		assertEquals(WHITE_LIST_LIMIT_EXCEEDED.getMessage(), exception.getMessage());
 	}
 
+	/*
+	 * IP Empty test
+	 */
+	@DisplayName("saveValidation 실패 테스트")
+	@Test
+	void saveValidation_IPEmptyTest() {
+		//given
+		SaveIpRequest request = new SaveIpRequest(
+			"", "test", LocalDateTime.now(), LocalDateTime.now().plusDays(1)
+		);
+		when(whiteListReaderRepository.activeWhiteListNum(WhiteList.State.ACTIVE)).thenReturn(10);
+
+		//when & then
+		BaseException exception = assertThrows(BaseException.class, () -> whiteListValidator.saveValidation(request));
+		assertEquals(NOT_FIND_IP_ADDRESS.getMessage(), exception.getMessage());
+	}
+
+	/*
+	 * Desctiption Empty test
+	 */
+	@DisplayName("saveValidation 실패 테스트")
+	@Test
+	void saveValidation_DesctiptionEmptyTest() {
+		//given
+		SaveIpRequest request = new SaveIpRequest(
+			"127.0.0.1", "", LocalDateTime.now(), LocalDateTime.now().plusDays(1)
+		);
+		when(whiteListReaderRepository.activeWhiteListNum(WhiteList.State.ACTIVE)).thenReturn(10);
+
+		//when & then
+		BaseException exception = assertThrows(BaseException.class, () -> whiteListValidator.saveValidation(request));
+		assertEquals(NOT_FIND_DESCRIPTION.getMessage(), exception.getMessage());
+	}
+
+	/*
+	 * StartTime or EndTime null test
+	 */
+	@DisplayName("saveValidation 실패 테스트")
+	@Test
+	void saveValidation_TimeNullTest() {
+		//given
+		SaveIpRequest request = new SaveIpRequest(
+			"127.0.0.1", "test", null, null
+		);
+		when(whiteListReaderRepository.activeWhiteListNum(WhiteList.State.ACTIVE)).thenReturn(10);
+
+		//when & then
+		BaseException exception = assertThrows(BaseException.class, () -> whiteListValidator.saveValidation(request));
+		assertEquals(NOT_FIND_TIME.getMessage(), exception.getMessage());
+	}
+
+	@DisplayName("searchValidation 테스트")
+	@Test
+	void searchValidationTest() {
+	    //given
+		SearchRequest request = new SearchRequest(
+			"test", LocalDateTime.now(), null
+		);
+
+	    //when
+		SearchRequest result = whiteListValidator.searchValidation(request);
+
+		//then
+		assertNotNull(result);
+		assertNotNull(result.getEndTime());
+		assertEquals(request.getDescription(), result.getDescription());
+	}
+
+	/*
+	 * NOT_FIND_START_TIME test
+	 */
+	@DisplayName("searchValidation 실패 테스트")
+	@Test
+	void startTimeNullTest() {
+		//given
+		SearchRequest request = new SearchRequest(
+			"test", null, null
+		);
+
+		//when & then
+		BaseException exception = assertThrows(BaseException.class, () -> whiteListValidator.searchValidation(request));
+		assertEquals(NOT_FIND_START_TIME.getMessage(), exception.getMessage());
+	}
 }

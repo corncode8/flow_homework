@@ -22,8 +22,8 @@ public class WhiteListSaveUseCase {
 	private final WhiteListValidator validator;
 
 	public WhiteList save(SaveIpRequest request) {
-		// 규칙 50개 제한 Validation
-		validator.saveValidation();
+		// 규칙 50개 제한 검증
+		validator.saveValidation(request);
 
 		return whiteListStore.save(
 			WhiteListCreator.create(request.getIp(), request.getDescription(), request.getStartTime(), request.getEndTime())

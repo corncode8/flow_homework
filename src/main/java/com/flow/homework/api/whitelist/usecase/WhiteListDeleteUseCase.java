@@ -19,9 +19,14 @@ public class WhiteListDeleteUseCase {
 
 	private final WhiteListReader whiteListReader;
 
-	public void delete(DeleteIpRequest request) {
-		WhiteList whiteList = whiteListReader.findWhiteList(request.getId());
-		whiteList.delete();
+	public Boolean delete(Long id) {
+		try {
+			WhiteList whiteList = whiteListReader.findWhiteList(id);
+			whiteList.delete();
+			return true;
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return false;
+		}
 	}
-
 }

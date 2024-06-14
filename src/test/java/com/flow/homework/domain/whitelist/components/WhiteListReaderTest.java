@@ -4,9 +4,13 @@ import static com.flow.homework.api.support.response.BaseResponseStatus.NOT_FIND
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +19,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import com.flow.homework.api.support.exceptions.BaseException;
 import com.flow.homework.domain.whitelist.entity.WhiteList;
@@ -61,4 +69,35 @@ public class WhiteListReaderTest {
 		assertEquals(NOT_FIND_WHITELIST.getMessage(), exception.getMessage());
 	}
 
+	@DisplayName("getActiveWhiteLists 테스트")
+	@Test
+	void getActiveWhiteListsTest() {
+	    //given
+		Pageable pageable = PageRequest.of(0, 10);
+
+		List<WhiteList> whiteLists = Arrays.asList(
+			new WhiteList(
+				"127.0.0.1", "test", LocalDateTime.now(), LocalDateTime.now().plusDays(1)
+			),
+			new WhiteList(
+				"127.0.1.1", "Test1", LocalDateTime.now(), LocalDateTime.now().plusDays(2)
+			),
+			new WhiteList(
+				"127.1.1.1", "Test2", LocalDateTime.now(), LocalDateTime.now().plusDays(3)
+			)
+		);
+
+		Page<WhiteList> whiteListPage = new PageImpl<>(whiteLists, pageable, whiteLists.size());
+		when(whiteListReaderRepository.getActiveWhiteLists(WhiteList.State.ACTIVE, any(Pageable.class))).thenReturn(whiteListPage);
+
+		//when
+		Page<WhiteList> result = whiteListReaderRepository.getActiveWhiteLists(WhiteList.State.ACTIVE, pageable);
+
+	    //then
+		assertNotNull(result);
+		assertEquals(3, result.getTotalElements());
+		assertEquals("127.0.0.1", result.getContent().get(0).getIpAddress());
+		assertEquals("127.0.1.1", result.getContent().get(1).getIpAddress());
+		assertEquals("127.1.1.1", result.getContent().get(2).getIpAddress());
+	}
 }

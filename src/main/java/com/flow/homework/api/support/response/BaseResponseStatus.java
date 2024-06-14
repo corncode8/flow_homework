@@ -23,19 +23,10 @@ public enum BaseResponseStatus {
 	DELETED_WHITELIST(false, HttpStatus.NOT_FOUND.value(), "삭제된 WHiteList 입니다."),
 	WHITE_LIST_LIMIT_EXCEEDED(false, HttpStatus.BAD_REQUEST.value(), "50개 이상 등록할 수 없습니다."),
 
-	INVALID_RESERVATION(false, HttpStatus.NOT_FOUND.value(), "일치하는 예약 정보가 없습니다."),
-	EMPTY_SEAT_RESERVATION(false, HttpStatus.NOT_FOUND.value(), "예약 가능한 좌석이 없습니다."),
-	RESERVED_SEAT(false, HttpStatus.BAD_REQUEST.value(), "예약된 좌석입니다."),
-	FAIL_RESERVAION_SEAT(false, HttpStatus.BAD_REQUEST.value(), "예약에 실패하였습니다."),
-	UPDATE_ERROR_RESERVAION_STATUS(false, HttpStatus.BAD_REQUEST.value(), "예약 상태 변경에 실패하였습니다."),
-
-	INVALID_DATE(false, HttpStatus.BAD_REQUEST.value(), "형식에 맞지 않는 날짜 양식입니다."),
-	NOT_FOUND_CONCERT_OPTION(false, HttpStatus.NOT_FOUND.value(), "찾을 수 없는 콘서트 일정입니다."),
-
-	NOT_FOUND_PAYMENT(false, HttpStatus.NOT_FOUND.value(), "찾을 수 없는 결제내역 입니다."),
-	PAY_INVALID_SEAT(false, HttpStatus.BAD_REQUEST.value(), "결제: 유효하지 않은 좌석입니다."),
-	PAY_EXPIRED_SEAT(false, HttpStatus.BAD_REQUEST.value(), "결제: 만료된 좌석입니다."),
-	NOT_FOUND_EVENT_HISTORY(false, HttpStatus.NOT_FOUND.value(), "찾을 수 없는 EventHistory 입니다."),
+	NOT_FIND_START_TIME(false, HttpStatus.NOT_FOUND.value(), "startTime을 입력해주세요"),
+	NOT_FIND_IP_ADDRESS(false, HttpStatus.NOT_FOUND.value(), "IP를 입력해주세요"),
+	NOT_FIND_DESCRIPTION(false, HttpStatus.NOT_FOUND.value(), "설명을 입력해주세요"),
+	NOT_FIND_TIME(false, HttpStatus.NOT_FOUND.value(), "시간을 입력해주세요"),
 
 	/**
 	 * 500 :  Database, Server 오류

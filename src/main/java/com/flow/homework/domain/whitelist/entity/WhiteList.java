@@ -38,15 +38,9 @@ public class WhiteList extends BaseEntity {
 	private String description;
 
 	@Column(name = "start_time", nullable = false)
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime startTime;
 
 	@Column(name = "end_time", nullable = false)
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime endTime;
 
 	@Enumerated(value = EnumType.STRING)

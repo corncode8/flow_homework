@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>Flow Homework</title>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1" charset="UTF-8">
+    <link th:href="@{/css/bootstrap.css}"
+          href="../css/bootstrap.css" rel="stylesheet">
+    <script src="/js/whiteListManager.js"></script>
+
+    <style>
+        th, td {
+            text-align: center;
+        }
+        #ipForm {
+            display: none;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            margin-right: 10px;
+            max-width: 200px;
+        }
+        .search-container button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="max-width: 750px">
+    <div class="text-center py-5">
+        <h2>IP 접근 설정</h2>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end" type="button" onclick="toggleForm()">IP 추가</button>
+        </div>
+    </div>
+
+    <hr class="my-2">
+
+    <div class="search-container">
+        <form id="searchForm" method="get" action="/search" autocomplete="on" role="form" style="display: flex;">
+            <input type="text" name="description" id="descriptionSearch" class="form-control search-input" placeholder="내용 검색">
+            <input type="datetime-local" name="startTime" id="startTimeSearch" class="form-control search-input">
+            <input type="datetime-local" name="endTime" id="endTimeSearch" class="form-control search-input">
+            <button type="submit" class="btn btn-secondary">검색</button>
+        </form>
+    </div>
+
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>IP 주소</th>
+                <th>내용</th>
+                <th>사용 시작 시간</th>
+                <th>사용 끝 시간</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="list : ${whiteList}">
+                <td th:text="${list.getIpAddress()}"></td>
+                <td th:text="${list.getDescription()}"></td>
+                <td class="utc-time" th:text="${list.startTime}"></td>
+                <td class="utc-time" th:text="${list.endTime}"></td>
+                <td><button class="btn btn-danger small" th:data="${list.whiteListId}" onclick="deleteIp(this.getAttribute('data'))">Delete</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" style="position:relative; z-index: 1">
+        <ul class="pagination pagination-sm justify-content-center" style="margin-bottom: 80px">
+            <!-- Previous Page Link -->
+            <li th:classappend="${whiteList.number == 0} ? 'disabled' : ''" class="page-item">
+                <a th:href="@{/(page=${whiteList.number - 1})}" class="page-link" aria-label="Previous">&laquo;</a>
+            </li>
+
+            <!-- Page Number Links -->
+            <!-- Show page 1 always, and only show other pages if they exist -->
+            <li th:classappend="${whiteList.number == 0} ? 'active' : ''" class="page-item">
+                <a th:href="@{/(page=0)}" class="page-link">1</a>
+            </li>
+            <li th:if="${whiteList.totalPages > 1}" th:each="pageNum : ${#numbers.sequence(1, whiteList.totalPages - 1)}" th:classappend="${pageNum == whiteList.number} ? 'active' : ''" class="page-item">
+                <a th:href="@{/(page=${pageNum})}" th:text="${pageNum + 1}" class="page-link"></a>
+            </li>
+
+            <!-- Next Page Link -->
+            <li th:classappend="${whiteList.number + 1 >= whiteList.totalPages} ? 'disabled' : ''" class="page-item">
+                <a th:href="@{/(page=${whiteList.number + 1})}" class="page-link" aria-label="Next">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="ipForm" style="position: absolute; right: 40px; top: 100px; width: 350px; border: 1px solid #ccc; padding: 10px; background: #f9f9f9;">
+        <h4>IP 추가</h4>
+        <form onsubmit="saveIp(event)">
+            <div class="mb-3">
+                <label for="ipAddress" class="form-label">IP 주소</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="ipAddress" placeholder="000.000.000.000">
+                    <button type="button" class="btn btn-secondary" onclick="fetchCurrentIp()">현재 IP 불러오기</button>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">설명</label>
+                <input type="text" class="form-control" id="description" placeholder="IP 주소의 설명을 작성해주세요">
+            </div>
+            <div class="mb-3">
+                <label for="startTime" class="form-label">허용 시작 시간</label>
+                <input type="datetime-local" class="form-control" id="startTime">
+            </div>
+            <div class="mb-3">
+                <label for="endTime" class="form-label">허용 끝 시간</label>
+                <input type="datetime-local" class="form-control" id="endTime">
+            </div>
+            <button type="submit" class="btn btn-primary">저장</button>
+            <button type="button" class="btn btn-secondary" onclick="toggleForm()">취소</button>
+        </form>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const utcTimeElements = document.querySelectorAll('.utc-time');
+        utcTimeElements.forEach(function(element) {
+            const utcTime = element.textContent;
+            const localTime = new Date(utcTime).toLocaleString('ko-KR', {
+                year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', hour12: true
+            });
+            element.textContent = localTime;
+        });
+    });
+</script>
+</body>
+</html>

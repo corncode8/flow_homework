@@ -57,7 +57,6 @@ public class WhiteListSearchRepositoryImpl implements WhiteListSearchRepository 
 		QWhiteList whiteList = QWhiteList.whiteList;
 		BooleanBuilder condition = new BooleanBuilder();
 
-		condition.and(whiteList.status.eq(WhiteList.State.ACTIVE));
 		if (!searchDto.getDescription().isEmpty()) {
 			condition.and(whiteList.description.like("%" + searchDto.getDescription() + "%"));
 		}

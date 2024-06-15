@@ -25,7 +25,11 @@ public enum BaseResponseStatus {
 
 	NOT_FIND_START_TIME(false, HttpStatus.NOT_FOUND.value(), "startTime을 입력해주세요"),
 	NOT_FIND_IP_ADDRESS(false, HttpStatus.NOT_FOUND.value(), "IP를 입력해주세요"),
+
 	NOT_FIND_DESCRIPTION(false, HttpStatus.NOT_FOUND.value(), "설명을 입력해주세요"),
+	CANNOT_COMPOSED_DIGITS(false, HttpStatus.NOT_FOUND.value(), "설명은 숫자로만 구성될 수 없습니다."),
+	DESCRIPTION_TOO_LONG(false, HttpStatus.NOT_FOUND.value(), "설명은 최대 20자까지 입력이 가능합니다."),
+
 	NOT_FIND_TIME(false, HttpStatus.NOT_FOUND.value(), "시간을 입력해주세요"),
 
 	/**

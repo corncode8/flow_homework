@@ -16,6 +16,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.flow.homework.api.whitelist.request.SaveIpRequest;
+import com.flow.homework.api.whitelist.response.WhiteListSaveResponse;
 import com.flow.homework.domain.whitelist.entity.WhiteList;
 
 @Testcontainers
@@ -39,7 +40,7 @@ public class WhiteListSaveUseCaseTest {
 		);
 
 	    //when
-		WhiteList result = whiteListSaveUseCase.save(request);
+		WhiteListSaveResponse result = whiteListSaveUseCase.save(request);
 
 		//then
 		assertNotNull(result);

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.flow.homework.api.whitelist.request.SaveIpRequest;
+import com.flow.homework.api.whitelist.response.WhiteListSaveResponse;
 import com.flow.homework.domain.whitelist.components.WhiteListCreator;
 import com.flow.homework.domain.whitelist.components.WhiteListStore;
 import com.flow.homework.domain.whitelist.components.WhiteListValidator;
@@ -21,12 +22,15 @@ public class WhiteListSaveUseCase {
 	private final WhiteListStore whiteListStore;
 	private final WhiteListValidator validator;
 
-	public WhiteList save(SaveIpRequest request) {
+	public WhiteListSaveResponse save(SaveIpRequest request) {
 		// 규칙 50개 제한 검증
 		validator.saveValidation(request);
 
-		return whiteListStore.save(
-			WhiteListCreator.create(request.getIp(), request.getDescription(), request.getStartTime(), request.getEndTime())
+		WhiteList save = whiteListStore.save(
+			WhiteListCreator.create(request.getIp(), request.getDescription(), request.getStartTime(),
+				request.getEndTime())
 		);
+
+		return new WhiteListSaveResponse(save);
 	}
 }

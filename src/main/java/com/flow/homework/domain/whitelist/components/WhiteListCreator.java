@@ -12,5 +12,4 @@ public class WhiteListCreator {
 	public static WhiteList create(String ip, String description, LocalDateTime startTime, LocalDateTime endTime) {
 		return WhiteList.create(ip, description, startTime, endTime);
 	}
-
 }

@@ -35,8 +35,7 @@ ext {
 }
 
 dependencies {
-	// SpringBoot Starter
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// Web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	// Thymeleaf
@@ -56,9 +55,11 @@ dependencies {
 
 	// Mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
 	// TestContainers
 	testImplementation 'org.testcontainers:junit-jupiter'
@@ -80,6 +81,7 @@ tasks.named('test') {
 
 def querydslDir = 'src/main/generated/querydsl' //QueryDSL로 생성된 소스가 저장되는 위치
 
+
 querydsl {
 	jpa = true
 	querydslSourcesDir = querydslDir
@@ -87,12 +89,34 @@ querydsl {
 sourceSets {
 	main.java.srcDir querydslDir
 }
-compileQuerydsl{
-	options.annotationProcessorPath = configurations.querydsl
-}
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
 	querydsl.extendsFrom compileClasspath
 }
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+//querydsl {
+//	jpa = true
+//	querydslSourcesDir = querydslDir
+//}
+//sourceSets {
+//	main.java.srcDir querydslDir
+//}
+//compileQuerydsl {
+//	options.annotationProcessorPath = configurations.querydsl
+//}
+//sourceSets {
+//	main {
+//		java {
+//			srcDirs = ['src/main/java', 'src/main/generated']
+//		}
+//	}
+//}
+//configurations {
+//	compileOnly {
+//		extendsFrom annotationProcessor
+//	}
+//	querydsl.extendsFrom compileClasspath
+//}
+//

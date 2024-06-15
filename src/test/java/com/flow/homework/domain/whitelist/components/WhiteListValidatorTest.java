@@ -1,5 +1,7 @@
 package com.flow.homework.domain.whitelist.components;
 
+import static com.flow.homework.api.support.response.BaseResponseStatus.CANNOT_COMPOSED_DIGITS;
+import static com.flow.homework.api.support.response.BaseResponseStatus.DESCRIPTION_TOO_LONG;
 import static com.flow.homework.api.support.response.BaseResponseStatus.NOT_FIND_DESCRIPTION;
 import static com.flow.homework.api.support.response.BaseResponseStatus.NOT_FIND_IP_ADDRESS;
 import static com.flow.homework.api.support.response.BaseResponseStatus.NOT_FIND_START_TIME;
@@ -115,6 +117,40 @@ public class WhiteListValidatorTest {
 		assertEquals(NOT_FIND_TIME.getMessage(), exception.getMessage());
 	}
 
+	/*
+	 * CANNOT_COMPOSED_DIGITS test
+	 * 설명은 숫자로만 이루어질 수 없다.
+	 */
+	@DisplayName("saveValidation 실패 테스트")
+	@Test
+	void onlyDigitsTest() {
+		//given
+		SaveIpRequest request = new SaveIpRequest(
+			"127.0.0.1", "123123", LocalDateTime.now(), LocalDateTime.now().plusDays(1)
+		);
+
+		//when & then
+		BaseException exception = assertThrows(BaseException.class, () -> whiteListValidator.saveValidation(request));
+		assertEquals(CANNOT_COMPOSED_DIGITS.getMessage(), exception.getMessage());
+	}
+
+	/*
+	 * DESCRIPTION_TOO_LONG test
+	 * 설명은 20자 이상 등록될 수 없다.
+	 */
+	@DisplayName("saveValidation 실패 테스트")
+	@Test
+	void descriptionTooLongTest() {
+		//given
+		SaveIpRequest request = new SaveIpRequest(
+			"127.0.0.1", "ajdidirkwjdirjekdirjdk", LocalDateTime.now(), LocalDateTime.now().plusDays(1)
+		);
+
+		//when & then
+		BaseException exception = assertThrows(BaseException.class, () -> whiteListValidator.saveValidation(request));
+		assertEquals(DESCRIPTION_TOO_LONG.getMessage(), exception.getMessage());
+	}
+
 	@DisplayName("searchValidation 테스트")
 	@Test
 	void searchValidationTest() {
@@ -140,11 +176,13 @@ public class WhiteListValidatorTest {
 	void startTimeNullTest() {
 		//given
 		SearchRequest request = new SearchRequest(
-			"test", null, null
+			"test", null, LocalDateTime.now().plusDays(1)
 		);
 
 		//when & then
 		BaseException exception = assertThrows(BaseException.class, () -> whiteListValidator.searchValidation(request));
 		assertEquals(NOT_FIND_START_TIME.getMessage(), exception.getMessage());
 	}
+
+
 }

@@ -21,16 +21,10 @@ import lombok.Getter;
 public class BaseEntity {
 
 	@CreationTimestamp
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	@Column(name = "createdAt", nullable = false, updatable = false)
 	private LocalDateTime createdAt;
 
 	@UpdateTimestamp
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	@Column(name = "updatedAt", nullable = false)
 	private LocalDateTime updatedAt;
 

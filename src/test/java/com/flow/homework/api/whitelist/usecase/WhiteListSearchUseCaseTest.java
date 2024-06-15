@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
@@ -27,6 +28,7 @@ import com.flow.homework.domain.whitelist.entity.WhiteList;
 @Testcontainers
 @SpringBootTest
 @ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class WhiteListSearchUseCaseTest {
 
 	@Autowired
@@ -43,7 +45,6 @@ public class WhiteListSearchUseCaseTest {
 	void setUp() {
 		whiteListStore.save(new WhiteList("255.255.255.255", "test", LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1)));
 	}
-
 	@DisplayName("테스트")
 	@Test
 	void test() {

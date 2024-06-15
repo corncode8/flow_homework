@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.flow.homework.api.support.response.BaseResponse;
-import com.flow.homework.api.whitelist.request.DeleteIpRequest;
 import com.flow.homework.api.whitelist.request.SaveIpRequest;
 import com.flow.homework.api.whitelist.request.SearchRequest;
 import com.flow.homework.api.whitelist.response.WhiteListIpResponse;
@@ -27,7 +26,6 @@ import com.flow.homework.api.whitelist.usecase.WhiteListDeleteUseCase;
 import com.flow.homework.api.whitelist.usecase.WhiteListSaveUseCase;
 import com.flow.homework.api.whitelist.usecase.WhiteListSearchUseCase;
 import com.flow.homework.api.whitelist.usecase.WhiteListViewUseCase;
-import com.flow.homework.domain.whitelist.entity.WhiteList;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,9 +46,7 @@ public class WhiteListController {
 	 * @return BaseResponse<>
 	 */
 	@GetMapping("/")
-	public String whiteListView(@RequestParam(defaultValue = "0") int page,
-										 @RequestParam(defaultValue = "10") int size,
-										 Model model) {
+	public String whiteListView(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model) {
 
 		Page<WhiteListViewResponse> view = whiteListViewUseCase.view(page, size);
 
@@ -79,9 +75,9 @@ public class WhiteListController {
 	@PostMapping("/save")
 	@ResponseBody
 	public BaseResponse<WhiteListSaveResponse> save(@RequestBody SaveIpRequest request) {
-		WhiteList save = whiteListSaveUseCase.save(request);
+		WhiteListSaveResponse save = whiteListSaveUseCase.save(request);
 
-		return new BaseResponse<>(new WhiteListSaveResponse(save));
+		return new BaseResponse<>(save);
 	}
 
 
@@ -92,9 +88,7 @@ public class WhiteListController {
 	 */
 	@GetMapping("/search")
 	public String search(Model model, @Valid SearchRequest request,@PageableDefault Pageable pageable) {
-		log.info("SearchRequest: description={}, startTime={}, endTime={}", request.getDescription(), request.getStartTime(), request.getEndTime());
 		Page<WhiteListViewResponse> search = whiteListSearchUseCase.search(request, pageable);
-
 		model.addAttribute("whiteList", search);
 
 		int currentPage = search.getNumber();

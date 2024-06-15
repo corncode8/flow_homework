@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -88,7 +89,7 @@ public class WhiteListReaderTest {
 		);
 
 		Page<WhiteList> whiteListPage = new PageImpl<>(whiteLists, pageable, whiteLists.size());
-		when(whiteListReaderRepository.getActiveWhiteLists(WhiteList.State.ACTIVE, any(Pageable.class))).thenReturn(whiteListPage);
+		when(whiteListReaderRepository.getActiveWhiteLists(eq(WhiteList.State.ACTIVE), any(Pageable.class))).thenReturn(whiteListPage);
 
 		//when
 		Page<WhiteList> result = whiteListReaderRepository.getActiveWhiteLists(WhiteList.State.ACTIVE, pageable);

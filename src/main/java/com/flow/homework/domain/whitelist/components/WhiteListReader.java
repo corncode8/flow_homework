@@ -30,8 +30,8 @@ public class WhiteListReader {
 			.orElseThrow(() -> new BaseException(NOT_FIND_WHITELIST));
 	}
 
-	public Page<WhiteList> getActiveWhiteLists(WhiteList.State status, Pageable pageable) {
-		return whiteListReaderRepository.getActiveWhiteLists(status, pageable);
+	public Page<WhiteList> getActiveWhiteLists(Pageable pageable) {
+		return whiteListReaderRepository.findWhiteLists(pageable);
 	}
 
 	public Page<WhiteListViewResponse> searchWhiteList(SearchRequest request, Pageable pageable) {

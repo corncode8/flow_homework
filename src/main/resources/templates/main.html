@@ -75,7 +75,6 @@
         </table>
     </div>
 
-    <!-- Pagination -->
     <nav aria-label="Page navigation" style="position:relative; z-index: 1">
         <ul class="pagination pagination-sm justify-content-center" style="margin-bottom: 80px">
             <!-- Previous Page Link -->
@@ -83,16 +82,33 @@
                 <a th:href="@{/(page=${whiteList.number - 1})}" class="page-link" aria-label="Previous">&laquo;</a>
             </li>
 
-            <!-- Page Number Links -->
-            <!-- Show page 1 always, and only show other pages if they exist -->
+            <!-- First Page Link -->
             <li th:classappend="${whiteList.number == 0} ? 'active' : ''" class="page-item">
                 <a th:href="@{/(page=0)}" class="page-link">1</a>
             </li>
-            <li th:if="${whiteList.totalPages > 1}" th:each="pageNum : ${#numbers.sequence(1, whiteList.totalPages - 1)}" th:classappend="${pageNum == whiteList.number} ? 'active' : ''" class="page-item">
-                <a th:href="@{/(page=${pageNum})}" th:text="${pageNum + 1}" class="page-link"></a>
+
+            <li th:if="${whiteList.number > 2}" class="page-item">
+                <span class="page-link">...</span>
             </li>
 
-            <!-- Next Page Link -->
+            <li th:if="${whiteList.number > 1}" th:classappend="${whiteList.number - 1 == pageNum} ? 'active' : ''" class="page-item">
+                <a th:href="@{/(page=${whiteList.number - 1})}" th:text="${whiteList.number}" class="page-link"></a>
+            </li>
+            <li th:if="${whiteList.number != 0 && whiteList.number != whiteList.totalPages - 1}" th:classappend="active" class="page-item">
+                <a th:href="@{/(page=${whiteList.number})}" th:text="${whiteList.number + 1}" class="page-link"></a>
+            </li>
+            <li th:if="${whiteList.number + 1 < whiteList.totalPages}" th:classappend="${whiteList.number + 1 == pageNum} ? 'active' : ''" class="page-item">
+                <a th:href="@{/(page=${whiteList.number + 1})}" th:text="${whiteList.number + 2}" class="page-link"></a>
+            </li>
+
+            <li th:if="${whiteList.number + 2 < whiteList.totalPages - 1}" class="page-item">
+                <span class="page-link">...</span>
+            </li>
+
+            <li th:if="${whiteList.totalPages > 1}" th:classappend="${whiteList.number == whiteList.totalPages - 1} ? 'active' : ''" class="page-item">
+                <a th:href="@{/(page=${whiteList.totalPages - 1})}" th:text="${whiteList.totalPages}" class="page-link"></a>
+            </li>
+
             <li th:classappend="${whiteList.number + 1 >= whiteList.totalPages} ? 'disabled' : ''" class="page-item">
                 <a th:href="@{/(page=${whiteList.number + 1})}" class="page-link" aria-label="Next">&raquo;</a>
             </li>

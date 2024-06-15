@@ -26,7 +26,7 @@ public class WhiteListViewUseCase {
 		// 등록 시간 기준 내림차순으로 나열되어야 한다.
 		Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
 
-		Page<WhiteList> activeWhiteLists = whiteListReader.getActiveWhiteLists(WhiteList.State.ACTIVE, pageable);
+		Page<WhiteList> activeWhiteLists = whiteListReader.getActiveWhiteLists(pageable);
 		return activeWhiteLists.map(whiteList -> new WhiteListViewResponse(whiteList));
 	}
 }

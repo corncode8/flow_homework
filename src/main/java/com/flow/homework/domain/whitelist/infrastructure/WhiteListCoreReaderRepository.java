@@ -30,8 +30,8 @@ public class WhiteListCoreReaderRepository implements WhiteListReaderRepository 
 	}
 
 	@Override
-	public Page<WhiteList> getActiveWhiteLists(WhiteList.State status, Pageable pageable) {
-		return whiteListJpaRepository.findWhiteListsByStatus(status, pageable);
+	public Page<WhiteList> findWhiteLists(Pageable pageable) {
+		return whiteListJpaRepository.findAll(pageable);
 	}
 
 }

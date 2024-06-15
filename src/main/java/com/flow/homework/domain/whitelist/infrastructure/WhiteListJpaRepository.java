@@ -13,7 +13,4 @@ public interface WhiteListJpaRepository extends JpaRepository<WhiteList, Long> {
 	@Query("select count(w) from WhiteList w where w.status = :status")
 	int activeWhiteListNum(@Param("status") WhiteList.State status);
 
-	Page<WhiteList> findWhiteListsByStatus(WhiteList.State status, Pageable pageable);
-
-
 }

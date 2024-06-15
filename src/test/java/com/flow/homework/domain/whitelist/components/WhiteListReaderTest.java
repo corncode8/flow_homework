@@ -88,10 +88,10 @@ public class WhiteListReaderTest {
 		);
 
 		Page<WhiteList> whiteListPage = new PageImpl<>(whiteLists, pageable, whiteLists.size());
-		when(whiteListReaderRepository.getActiveWhiteLists(eq(WhiteList.State.ACTIVE), any(Pageable.class))).thenReturn(whiteListPage);
+		when(whiteListReaderRepository.findWhiteLists(any(Pageable.class))).thenReturn(whiteListPage);
 
 		//when
-		Page<WhiteList> result = whiteListReaderRepository.getActiveWhiteLists(WhiteList.State.ACTIVE, pageable);
+		Page<WhiteList> result = whiteListReaderRepository.findWhiteLists(pageable);
 
 	    //then
 		assertNotNull(result);

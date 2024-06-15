@@ -13,6 +13,6 @@ public interface WhiteListReaderRepository {
 
 	int activeWhiteListNum(WhiteList.State state);
 
-	Page<WhiteList> getActiveWhiteLists(WhiteList.State status, Pageable pageable);
+	Page<WhiteList> findWhiteLists(Pageable pageable);
 
 }

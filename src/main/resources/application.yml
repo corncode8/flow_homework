@@ -1,0 +1,79 @@
+spring:
+  profiles:
+    group: # Run - Edit Configurations - Active Profiles?? ??
+      dev: common, dev
+      prod: common, prod
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "common"
+  application:
+    name: demo
+  sql:
+    init:
+      platform: mysql
+  datasource:
+    url: jdbc:mysql://43.203.221.19:3306/flow?rewriteBatchedStatements=true&serverTimezone=Asia/Seoul
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver # mysql 8??
+
+
+spring.sql.init.platform: mysql
+server:
+  port: 9000
+  error:
+    include-message: always
+    include-binding-errors: always
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    groups-order: DESC
+    operationsSorter: method
+    disable-swagger-default-url: true
+    display-request-duration: true
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  paths-to-match:
+    - /**
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    generate-ddl: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "dev"
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    generate-ddl: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

@@ -35,6 +35,8 @@ ext {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+
 	// Web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -96,27 +98,3 @@ compileQuerydsl {
 	options.annotationProcessorPath = configurations.querydsl
 }
 
-//querydsl {
-//	jpa = true
-//	querydslSourcesDir = querydslDir
-//}
-//sourceSets {
-//	main.java.srcDir querydslDir
-//}
-//compileQuerydsl {
-//	options.annotationProcessorPath = configurations.querydsl
-//}
-//sourceSets {
-//	main {
-//		java {
-//			srcDirs = ['src/main/java', 'src/main/generated']
-//		}
-//	}
-//}
-//configurations {
-//	compileOnly {
-//		extendsFrom annotationProcessor
-//	}
-//	querydsl.extendsFrom compileClasspath
-//}
-//

@@ -1,0 +1,15 @@
+spring:
+  config:
+    activate:
+      on-profile: data
+  datasource:
+    url: jdbc:mysql://43.203.203.129:3306/flow?rewriteBatchedStatements=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+

@@ -17,7 +17,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.flow.homework.api.whitelist.request.SaveIpRequest;
 import com.flow.homework.api.whitelist.response.WhiteListSaveResponse;
-import com.flow.homework.domain.whitelist.entity.WhiteList;
 
 @Testcontainers
 @SpringBootTest

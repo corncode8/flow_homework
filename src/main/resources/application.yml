@@ -15,8 +15,8 @@ spring:
     init:
       platform: mysql
   datasource:
-    url: jdbc:mysql://54.180.75.220:3306/flow?rewriteBatchedStatements=true&serverTimezone=Asia/Seoul
-    username: root
+    url: jdbc:mysql://flow-homework.caqtdicuqzyr.ap-northeast-2.rds.amazonaws.com:3306/flow?rewriteBatchedStatements=true&serverTimezone=Asia/Seoul
+    username: admin
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver # mysql 8??
 

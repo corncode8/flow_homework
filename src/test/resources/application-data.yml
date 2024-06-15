@@ -3,9 +3,9 @@ spring:
     activate:
       on-profile: data
   datasource:
-    url: jdbc:mysql://54.180.75.220:3306/flow?rewriteBatchedStatements=true
+    url: jdbc:mysql://flow-homework.caqtdicuqzyr.ap-northeast-2.rds.amazonaws.com:3306/flow?rewriteBatchedStatements=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
+    username: admin
     password: password
 
   jpa:
